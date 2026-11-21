@@ -338,3 +338,19 @@ footer {
   .header-inner .brand { gap: 7px; }
   .header-inner .brand > span { font-size: 2rem; }
 }
+
+/* Clear service boundaries at booking and contact points. */
+.service-policy {
+  padding: 14px 18px;
+  border: 1px solid #b9a6c6;
+  border-radius: 12px;
+  background: #ffffffb3;
+  color: var(--heading);
+  font-size: .875rem;
+  line-height: 1.65;
+}
+.service-policy strong { display: block; margin-bottom: 3px; font-weight: 600; }
+.service-policy span { display: block; }
+.cta .service-policy { max-width: 560px; margin: 22px auto 0; font-size: .875rem; text-align: left; }
+#booking .service-policy { margin: 18px 0; font-size: .875rem; }
+.page-intro .service-policy { margin-top: 24px; font-size: .875rem; }
