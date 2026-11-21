@@ -16,9 +16,14 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
       - uses: actions/configure-pages@v5
       - name: Build and check static preview
         run: python3 scripts/build_pages.py --base-path /massazhny-salon
+      - name: Test settings and GitHub admin
+        run: node --test tests/*.test.mjs
       - uses: actions/upload-pages-artifact@v4
         with:
           path: .preview/pages
