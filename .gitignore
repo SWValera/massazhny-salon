@@ -1,0 +1,10 @@
+.preview/
+__pycache__/
+.DS_Store
+dist/
+node_modules/
+.wrangler/
+.dev.vars
+.dev.vars.*
+.env*
+cloudflare/pages.json

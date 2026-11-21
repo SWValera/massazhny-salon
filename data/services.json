@@ -1,0 +1,34 @@
+[
+  {
+    "id": "klassicheskiy",
+    "name": "Классический массаж"
+  },
+  {
+    "id": "sportivnyy",
+    "name": "Спортивный массаж"
+  },
+  {
+    "id": "lechebnyy",
+    "name": "Лечебный массаж"
+  },
+  {
+    "id": "antitsellyulitnyy",
+    "name": "Антицеллюлитный массаж"
+  },
+  {
+    "id": "limfodrenazhnyy",
+    "name": "Лимфодренажный массаж"
+  },
+  {
+    "id": "obshchiy",
+    "name": "Общий массаж"
+  },
+  {
+    "id": "po-zonam",
+    "name": "Массаж по зонам"
+  },
+  {
+    "id": "shugaring",
+    "name": "Шугаринг"
+  }
+]

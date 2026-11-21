@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "laveliya",
+  "main": "cloudflare/worker.js",
+  "compatibility_date": "2026-11-21",
+  "assets": {"directory": "dist", "binding": "ASSETS", "run_worker_first": true},
+  "vars": {"SITE_URL": "", "INDEXABLE": "false"},
+  "d1_databases": [{"binding": "DB", "database_name": "laveliya", "database_id": "00000000-0000-0000-0000-000000000000", "migrations_dir": "migrations"}]
+}

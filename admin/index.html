@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Управление сайтом — Лавелия</title><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/fonts.css"><link rel="stylesheet" href="/admin/admin.css"><script src="/admin/admin.js" defer></script></head>
+<body>
+<header><a href="/" class="logo">Лавелия<small>МАССАЖ И УХОД</small></a><a href="/" target="_blank" rel="noopener" class="site-link">Открыть сайт</a></header>
+<main>
+<section id="login" class="login panel" hidden><p class="eyebrow">УПРАВЛЕНИЕ САЙТОМ</p><h1>С заботой<br>о каждой детали.</h1><p>Войдите, чтобы изменить цены и контакты салона.</p><form id="login-form"><label for="password">Пароль</label><input id="password" type="password" autocomplete="current-password" required maxlength="256"><button type="submit">Войти</button></form></section>
+<section id="editor" hidden>
+<div class="heading"><div><p class="eyebrow">УПРАВЛЕНИЕ САЙТОМ</p><h1>Цены и контакты</h1><p>Изменения появятся на всех страницах после сохранения.</p></div><button type="button" id="logout" class="secondary">Выйти</button></div>
+<form id="settings-form">
+<section class="panel"><div class="section-title"><h2>Стоимость услуг</h2><span>Тенге · ₸</span></div><p class="hint">Введите минимальную стоимость. На сайте она отображается с пометкой «от».</p><div id="prices" class="prices"></div></section>
+<section class="panel"><h2>Телефон</h2><label for="phone">Номер для звонков и WhatsApp</label><input id="phone" name="phone" type="tel" autocomplete="tel" required placeholder="+7 705 131 03 39"><p class="hint">Обновится в контактах, кнопках звонка и ссылках WhatsApp.</p></section>
+<section class="panel"><h2>Адрес салона</h2><div class="two-columns"><div><label for="city">Город</label><input id="city" name="city" autocomplete="address-level2" maxlength="80" required></div><div><label for="street">Улица, дом, помещение</label><input id="street" name="street" autocomplete="street-address" maxlength="160" required></div></div>
+<details id="route-details"><summary>Точка для построения маршрута</summary><p class="hint">При переезде укажите координаты нового входа из карт. Один только текст адреса не меняет точку маршрута.</p><div class="two-columns"><div><label for="latitude">Широта</label><input id="latitude" name="latitude" type="number" step="any" min="-90" max="90" required></div><div><label for="longitude">Долгота</label><input id="longitude" name="longitude" type="number" step="any" min="-180" max="180" required></div></div><label for="twoGisId">Номер здания в ссылке 2ГИС — необязательно</label><input id="twoGisId" name="twoGisId" inputmode="numeric" pattern="[0-9]*" maxlength="25"><p class="hint">При изменении координат старый номер здания очищается. Маршрут можно построить по координатам.</p><div class="route-links"><a id="yandex-check" target="_blank" rel="noopener noreferrer">Проверить в Яндекс Картах</a><a id="dgis-check" target="_blank" rel="noopener noreferrer">Проверить в 2ГИС</a></div></details>
+</section>
+<div class="save-bar"><div><strong id="save-state">Все изменения сохранены</strong><small id="updated"></small></div><button id="save" type="submit" disabled>Сохранить изменения</button></div>
+</form>
+</section>
+<p id="status" role="status" aria-live="polite">Загружаем настройки…</p>
+<button id="retry" type="button" class="secondary" hidden>Повторить загрузку</button>
+</main>
+</body></html>

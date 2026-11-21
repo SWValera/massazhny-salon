@@ -1,0 +1,107 @@
+/* User-supplied magnolia. Decorative background only, never intercepts input. */
+.hero-shell::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  width: clamp(380px,42vw,610px);
+  aspect-ratio: 3 / 2;
+  bottom: -95px;
+  left: -65px;
+  background: url('/assets/magnolia-branch.webp') center / contain no-repeat;
+  opacity: .48;
+}
+.chooser-section { position: relative; isolation: isolate; }
+.chooser-section::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  width: 300px;
+  aspect-ratio: 3 / 2;
+  bottom: 24px;
+  left: -48px;
+  transform: rotate(-12deg);
+  background: url('/assets/magnolia-branch.webp') center / contain no-repeat;
+  opacity: .47;
+}
+.hero-shell ~ .cta::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  width: 300px;
+  aspect-ratio: 3 / 2;
+  right: 8px;
+  top: 35px;
+  background: url('/assets/magnolia-branch.webp') center / contain no-repeat;
+  opacity: .65;
+  transform: rotate(10deg);
+}
+@media(max-width:900px) {
+  .hero-shell::after { width: 380px; left: -80px; bottom: -45px; }
+  .chooser-section::before { width: 230px; left: -35px; bottom: 30px; opacity: .38; }
+}
+@media(max-width:640px) {
+  .hero-shell::after { width: 290px; top: -18px; right: -95px; bottom: auto; left: auto; opacity: .5; }
+  .chooser-section::before { width: 200px; left: auto; right: 0; top: 20px; bottom: auto; opacity: .3; transform: none; }
+  .hero-shell ~ .cta::after { width: 210px; right: -65px; top: 8px; opacity: .48; }
+}
+
+/* First-screen accent on every internal page, behind its text. */
+.page-intro,.detail-hero > div:first-child {
+  position: relative;
+  isolation: isolate;
+}
+.page-intro::after,.detail-hero > div:first-child::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  aspect-ratio: 3 / 2;
+  background: url('/assets/magnolia-branch.webp') center / contain no-repeat;
+}
+.page-intro::after {
+  width: clamp(260px,30vw,420px);
+  top: 0;
+  right: 0;
+  opacity: .5;
+}
+.detail-hero > div:first-child::before {
+  width: clamp(220px,22vw,320px);
+  top: -35px;
+  right: -20px;
+  opacity: .4;
+}
+@media(max-width:900px) {
+  .page-intro::after { width: 270px; opacity: .42; }
+  .detail-hero > div:first-child::before { width: 230px; right: 0; opacity: .38; }
+}
+@media(max-width:640px) {
+  .page-intro::after { width: 230px; top: 0; right: -10px; opacity: .42; }
+  .detail-hero > div:first-child::before { width: 230px; top: -35px; right: -10px; opacity: .42; }
+}
+
+/* A large magnolia fills the open space beside the footer contacts. */
+footer { position: relative; isolation: isolate; overflow: hidden; }
+footer::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  width: clamp(380px,42vw,600px);
+  aspect-ratio: 3 / 2;
+  right: -70px;
+  bottom: 65px;
+  background: url('/assets/magnolia-branch.webp') center / contain no-repeat;
+  opacity: .55;
+  mask-image: linear-gradient(90deg,transparent 0%,#000 60%);
+}
+@media(max-width:640px) {
+  footer::before {
+    width: 390px;
+    right: -90px;
+    bottom: 190px;
+    opacity: .65;
+    mask-image: linear-gradient(90deg,transparent 12%,#000 76%);
+  }
+}

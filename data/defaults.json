@@ -1,0 +1,18 @@
+{
+  "phone": "+77051310339",
+  "city": "Алматы",
+  "street": "Маркова, 28",
+  "latitude": 43.230853,
+  "longitude": 76.929838,
+  "twoGisId": "9430047374996996",
+  "prices": {
+    "klassicheskiy": 5000,
+    "sportivnyy": 5000,
+    "lechebnyy": 5000,
+    "antitsellyulitnyy": 5000,
+    "limfodrenazhnyy": 5000,
+    "obshchiy": 5000,
+    "po-zonam": 5000,
+    "shugaring": 2000
+  }
+}

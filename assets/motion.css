@@ -1,0 +1,158 @@
+/* Lightweight depth and light. All decorative layers ignore pointer input. */
+.button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: transform .22s ease, box-shadow .22s ease, background-color .22s ease;
+}
+.button.primary,.button.primary:hover {
+  background-image: linear-gradient(180deg,#ffffff27 0%,#ffffff08 48%,#443c5009 100%);
+  box-shadow: inset 0 1px 0 #ffffff80, inset 0 -1px 0 #443c5030,
+              0 4px 0 #443c5026, 0 9px 22px #443c5019;
+}
+.button.outline { box-shadow: inset 0 1px 0 #ffffff66, 0 4px 12px #51495d0b; }
+.button::after {
+  content: '';
+  position: absolute;
+  inset: -60% auto -60% -75%;
+  width: 48%;
+  background: linear-gradient(105deg,transparent 8%,#ffffff12 28%,#ffffff65 50%,#ffffff12 72%,transparent 92%);
+  transform: translateX(0) skewX(-18deg);
+  pointer-events: none;
+}
+.button:active { transform: translateY(2px) scale(.99); }
+.button.primary:active { box-shadow: inset 0 1px 0 #ffffff65,0 1px 0 #443c5026,0 3px 9px #443c5019; }
+.button:focus-visible { outline: 3px solid var(--heading); outline-offset: 4px; box-shadow: 0 0 0 7px white; }
+.hero .primary { box-shadow: inset 0 1px 0 #ffffff99,inset 0 -1px 0 #9b476830,0 4px 0 #443c5045,0 12px 27px #443c5030,0 0 28px #f4b5cd10; }
+.site-header { box-shadow: 0 3px 18px #443c5008; }
+.hero-shell { position: relative; isolation: isolate; }
+.hero-shell::before {
+  content: '';
+  position: absolute;
+  width: 680px; height: 680px;
+  max-width: 90vw;
+  right: -240px; top: -220px;
+  border-radius: 50%;
+  border: 1px solid #c8bed824;
+  background: radial-gradient(circle at 50% 45%,#c8bed80d 0%,transparent 65%);
+  box-shadow: 0 0 0 55px #c8bed804,0 0 0 110px #c8bed803;
+  pointer-events: none;
+  z-index: -1;
+}
+.hero-visual {
+  border-radius: 110px 16px 16px 16px;
+  box-shadow: 0 26px 55px -18px #443c507a,0 9px 20px #443c5026;
+}
+.hero-visual::before {
+  content: '';
+  position: absolute; inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 #ffffff80,inset 1px 0 0 #ffffff36;
+  border: 1px solid #ffffff20;
+  pointer-events: none;
+}
+.hero-caption { text-shadow: 0 2px 15px #443c5055; }
+.photo-note { text-shadow: 0 1px 8px #443c5060; }
+.service-card {
+  position: relative;
+  box-shadow: 0 3px 5px #51495d05,0 13px 30px -16px #51495d35;
+  transition: transform .3s ease,box-shadow .3s ease,border-color .3s ease;
+}
+.service-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 #ffffffcf;
+  border: 1px solid #ffffff40;
+  pointer-events: none;
+}
+.service-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(320px circle at var(--spot-x,50%) var(--spot-y,25%),#ffffff2b,transparent 65%);
+  opacity: 0;
+  transition: opacity .3s ease;
+  pointer-events: none;
+}
+.choice-result,.price-aside,.notice {
+  box-shadow: inset 0 1px 0 #ffffffad,0 13px 35px -22px #51495d45;
+}
+.map-frame { box-shadow: 0 18px 38px -24px #51495d55; }
+.map-caption { box-shadow: inset 0 1px 0 #ffffff38,0 5px 15px #443c5033; }
+.detail-image img,.approach-image img { box-shadow: 0 22px 40px -25px #443c5070; }
+.cta {
+  background-image: radial-gradient(ellipse at 12% 0%,#ffffff55,transparent 55%),linear-gradient(150deg,transparent 50%,#c8bed814);
+  box-shadow: inset 0 1px 0 #ffffffc2,inset 0 -1px 0 #51495d12,0 19px 42px -25px #51495d65;
+  border: 1px solid #ffffff66;
+}
+.cta-art { pointer-events: none; }
+.brand>.icon { box-shadow: inset 0 1px 0 #ffffff80,0 4px 12px #51495d15; }
+.feature-list .icon { box-shadow: inset 0 1px 0 #ffffffa0,0 3px 8px #51495d10; }
+dialog { box-shadow: inset 0 1px 0 white,0 30px 110px #443c5066; }
+.choice-tabs button,.service-chips a { transition: background-color .2s,color .2s,box-shadow .2s,transform .2s; }
+.choice-tabs button.selected { box-shadow: inset 0 1px 0 #ffffff40,0 4px 12px #51495d26; }
+@keyframes button-glint {
+  from { transform: translateX(0) skewX(-18deg); }
+  to { transform: translateX(490%) skewX(-18deg); }
+}
+@keyframes welcome-glint {
+  0%,28% { transform: translateX(0) skewX(-18deg); }
+  44%,100% { transform: translateX(490%) skewX(-18deg); }
+}
+@keyframes light-drift {
+  from { transform: translate3d(0,0,0); }
+  to { transform: translate3d(-35px,32px,0); }
+}
+@media(prefers-reduced-motion:no-preference) {
+  .hero .primary::after { animation: welcome-glint 7s ease-in-out 2; }
+  .hero-shell::before { animation: light-drift 19s ease-in-out infinite alternate; }
+  dialog[open] { animation: dialog-arrive .24s ease-out; }
+  @keyframes dialog-arrive {
+    from { opacity: .55; transform: translateY(10px) scale(.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .button:hover { transform: translateY(-3px); }
+  .button.primary:hover { box-shadow: inset 0 1px 0 #ffffff99,0 5px 0 #443c5026,0 13px 26px #443c5026; }
+  .button:hover::after,.button:focus-visible::after { animation: button-glint .85s ease-out; }
+  .hero .primary:hover::after { animation: button-glint .85s ease-out; }
+  .button:active { transform: translateY(2px) scale(.99); }
+  [data-depth] { transform: perspective(1100px) rotateX(var(--rotate-x,0deg)) rotateY(var(--rotate-y,0deg)) translateY(var(--lift,0px)); }
+  .hero-visual[data-depth] { transition: transform .35s ease-out; }
+  .service-card:hover { --lift: -6px; box-shadow: 0 24px 40px -20px #51495d55,0 4px 10px #51495d0d; }
+  .service-card:hover::after { opacity: 1; }
+  .service-card:hover>img { transform: scale(1.035); }
+  .service-chips a:hover,.choice-tabs button:hover { transform: translateY(-2px); box-shadow: 0 5px 13px #51495d12; }
+}
+@media(max-width:640px) {
+  .hero-visual { border-radius: 75px 12px 12px 12px; box-shadow: 0 18px 30px -17px #443c5088; }
+  .hero-shell::before { width: 350px; height: 350px; right: -180px; top: 280px; }
+  .mobile-bar { box-shadow: 0 -5px 23px #443c5012; }
+  .mobile-bar .primary { box-shadow: inset 0 1px 0 #ffffff9c,0 2px 0 #443c5022,0 4px 10px #443c5010; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .button::after,.hero-shell::before { animation: none !important; }
+  .button:hover,.button:active,.service-card:hover,[data-depth] { transform: none !important; }
+  .service-card:hover>img { transform: none; }
+}
+html.motion-paused .hero-shell::before,html.motion-paused .hero .primary::after { animation-play-state: paused; }
+
+/* A clear call affordance on the existing white phone buttons. */
+a[href^="tel:"] > .icon {
+  color: #16854b;
+  stroke-width: 2;
+  transform-origin: 50% 55%;
+}
+@keyframes phone-ring {
+  0%,24%,100% { transform: rotate(0); }
+  4%,12%,20% { transform: rotate(-15deg); }
+  8%,16% { transform: rotate(15deg); }
+}
+@media(prefers-reduced-motion:no-preference) {
+  a[href^="tel:"] > .icon { animation: phone-ring 4.5s ease-in-out infinite; }
+}
+html.motion-paused a[href^="tel:"] > .icon { animation-play-state: paused; }
