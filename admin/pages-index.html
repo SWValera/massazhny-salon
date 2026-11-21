@@ -3,7 +3,7 @@
 <body>
 <header><a href="/" class="logo">Лавелия<small>МАССАЖ И УХОД</small></a><a href="/" target="_blank" rel="noopener" class="site-link">Открыть сайт</a></header>
 <main>
-<section id="login" class="login panel" hidden><p class="eyebrow">УПРАВЛЕНИЕ САЙТОМ</p><h1>С заботой<br>о каждой детали.</h1><p>Войдите с ключом GitHub, чтобы изменить цены и контакты салона. Ключ действует только в этой вкладке; после обновления страницы потребуется войти снова.</p><form id="login-form"><label for="password">Ключ доступа GitHub</label><input id="password" type="password" autocomplete="off" spellcheck="false" autocapitalize="none" required maxlength="256"><button type="submit">Войти</button></form><details class="access-help"><summary>Как получить ключ для входа</summary><ol><li>Войдите в аккаунт GitHub, которому принадлежит сайт.</li><li>Откройте <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">создание ключа доступа</a>.</li><li>В поле Token name укажите «Лавелия — админка» и выберите срок действия.</li><li>В Repository access выберите Only select repositories → <strong>massazhny-salon</strong>.</li><li>В Permissions добавьте <strong>Contents: Read and write</strong>. Другие права добавлять не нужно.</li><li>Нажмите Generate token, скопируйте ключ и вставьте в поле выше. Сохраните его в менеджере паролей: GitHub показывает ключ один раз.</li></ol><p>Это ключ доступа, а не пароль от GitHub. Админка отправляет его только GitHub для чтения и сохранения настроек.</p></details></section>
+<section id="login" class="login panel" hidden><p class="eyebrow">УПРАВЛЕНИЕ САЙТОМ</p><h1>С заботой<br>о каждой детали.</h1><p>Введите пароль, чтобы изменить цены и контакты салона.</p><form id="login-form" autocomplete="on"><input type="text" name="username" autocomplete="username" value="laveliya-admin" class="autofill-username" tabindex="-1" aria-hidden="true"><label for="password">Пароль</label><input id="password" name="password" type="password" autocomplete="current-password" spellcheck="false" autocapitalize="none" required maxlength="256"><button type="submit">Войти</button></form><p class="hint password-hint">Сохраните пароль, когда браузер предложит. В следующий раз он сможет подставить его автоматически.</p></section>
 <section id="editor" hidden>
 <div class="heading"><div><p class="eyebrow">УПРАВЛЕНИЕ САЙТОМ</p><h1>Цены и контакты</h1><p>Сохраните изменения — сайт обновится на всех страницах после публикации. Обычно это занимает несколько минут.</p></div><button type="button" id="logout" class="secondary">Выйти</button></div>
 <form id="settings-form">
@@ -15,9 +15,9 @@
 <div class="save-bar"><div><strong id="save-state">Все изменения сохранены</strong><small id="updated"></small></div><button id="save" type="submit" disabled>Сохранить изменения</button></div>
 </form>
 </section>
-<section id="publication" class="publication" hidden aria-live="polite"><strong id="publication-state"></strong><p id="publication-detail"></p><div class="route-links"><button id="check-publication" class="secondary" type="button">Проверить публикацию</button><a href="https://github.com/SWValera/massazhny-salon/actions/workflows/pages.yml" target="_blank" rel="noopener noreferrer">Ход публикации в GitHub</a></div></section>
+<section id="publication" class="publication" hidden aria-live="polite"><strong id="publication-state"></strong><p id="publication-detail"></p><div class="route-links"><button id="check-publication" class="secondary" type="button">Проверить публикацию</button></div></section>
 <button id="refresh" type="button" class="secondary" hidden>Загрузить актуальные данные</button>
-<p id="status" role="status" aria-live="polite">Для входа используйте ключ доступа к репозиторию сайта.</p>
+<p id="status" role="status" aria-live="polite"></p>
 <button id="retry" type="button" class="secondary" hidden>Повторить загрузку</button>
 <noscript>Для работы админки включите JavaScript в браузере.</noscript></main>
 </body></html>

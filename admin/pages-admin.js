@@ -1,5 +1,6 @@
 import config from './config.js';
 import {GitHubSettings} from './github-client.js';
+import {openAccess} from './password-vault.js';
 import {services,validateSettings,routes} from './settings.js';
 const $=id=>document.getElementById(id),client=new GitHubSettings(config);
 let state=null,dirty=false,busy=false,publicationTimer=null,publicationVersion=0;
@@ -27,7 +28,7 @@ function populate(){
   Object.assign(input,{id:label.htmlFor,type:'number',min:'1',max:'10000000',step:'1',required:true,inputMode:'numeric',value:state.data.prices[service.id]});
   row.className='price-input';unit.textContent='₸';row.append(input,unit);wrap.append(label,row);$('prices').append(wrap);
  }
- dirty=false;$('save').disabled=true;$('save-state').textContent='Настройки сохранены в GitHub';
+ dirty=false;$('save').disabled=true;$('save-state').textContent='Изменения сохранены';
  $('updated').textContent='Статус сайта — ниже';$('refresh').hidden=true;
  updateRoutes();
 }
@@ -49,27 +50,37 @@ async function watchPublication(){
    const deployed=await response.json();
    if(version!==publicationVersion)return;
    if(deployed.settingsSha===sha){
-    publication('Опубликовано на сайте','Эти цены и контакты уже доступны посетителям. Если сайт был открыт ранее, обновите его страницу.','success');
+    publication('Опубликовано на сайте','Последние сохранённые цены и контакты уже доступны посетителям. Если сайт был открыт ранее, обновите его страницу.','success');
     $('updated').textContent='На сайте: '+new Date(deployed.builtAt).toLocaleString('ru-RU');return;
    }
-   publication('Сохранено в GitHub · сайт обновляется','Публикация обычно занимает несколько минут. Можно закрыть админку: обновление продолжится автоматически.');
+   publication('Сохранено · сайт обновляется','Публикация обычно занимает несколько минут. Можно закрыть админку: обновление продолжится автоматически.');
   }catch{
    if(version!==publicationVersion)return;
-   publication('Сохранено в GitHub · публикация пока не подтверждена','Проверим ещё раз автоматически. Ход сборки можно посмотреть по ссылке ниже.');
+   publication('Сохранено · публикация пока не подтверждена','Проверим ещё раз автоматически. Если обновление задержится, сообщите разработчику сайта.');
   }
   if(version!==publicationVersion)return;
   if(attempts<30)publicationTimer=setTimeout(check,10000);
-  else publication('Сохранено в GitHub · проверьте публикацию','Автоматическая проверка завершилась. Посмотрите ход публикации в GitHub и нажмите «Проверить публикацию».');
+  else publication('Сохранено · проверьте публикацию','Автоматическая проверка завершилась. Нажмите «Проверить публикацию». Если настройки не обновились, сообщите разработчику сайта.');
  }
  await check();
 }
 $('check-publication').addEventListener('click',watchPublication);
 $('login-form').addEventListener('submit',async event=>{
  event.preventDefault();const button=$('login-form').querySelector('button');button.disabled=true;
- status('Проверяем доступ к GitHub…');
+ status('Входим…');
  try{
-  state=await client.login($('password').value);state.data=validateSettings(state.data);
-  $('password').value='';populate();$('login').hidden=true;$('editor').hidden=false;status();watchPublication();
+  const password=$('password').value;
+  const response=await fetch(new URL('./access.json',import.meta.url),{cache:'no-store',credentials:'omit'});
+  if(!response.ok)throw new Error('Вход ещё не настроен. Обратитесь к разработчику сайта.');
+  let token=await openAccess(password,await response.json(),config.repository);
+  try{state=await client.login(token);}finally{token='';}
+  state.data=validateSettings(state.data);
+  populate();$('login').hidden=true;$('editor').hidden=false;status();watchPublication();
+  // Use the browser's password manager; never write passwords to Web Storage.
+  if(window.PasswordCredential&&navigator.credentials?.store){
+   navigator.credentials.store(new PasswordCredential({id:'laveliya-admin',name:'Лавелия — администратор',password})).catch(()=>{});
+  }
+  $('password').value='';
  }catch(error){showLogin();status(error.message,'error');}
  finally{button.disabled=false;}
 });
@@ -84,7 +95,7 @@ $('settings-form').addEventListener('submit',async event=>{
  const data={phone:$('phone').value,city:$('city').value,street:$('street').value,latitude:Number($('latitude').value),longitude:Number($('longitude').value),twoGisId:$('twoGisId').value,prices:{}};
  for(const service of services)data.prices[service.id]=Number($('price-'+service.id).value);
  let valid;try{valid=validateSettings(data);}catch(error){status(error.message,'error');return;}
- lock(true);status('Сохраняем настройки в GitHub…');
+ lock(true);status('Сохраняем изменения…');
  try{
   state=await client.save(valid,state.sha);populate();status('Сохранено. Запущено обновление сайта.','success');watchPublication();
  }catch(error){
@@ -94,7 +105,7 @@ $('settings-form').addEventListener('submit',async event=>{
  }finally{lock(false);}
 });
 $('refresh').addEventListener('click',async()=>{
- if(dirty&&!confirm('Загрузить настройки из GitHub? Несохранённые изменения в форме будут потеряны.'))return;
+ if(dirty&&!confirm('Загрузить сохранённые настройки? Несохранённые изменения в форме будут потеряны.'))return;
  lock(true);
  try{state=await client.read();state.data=validateSettings(state.data);populate();status('Загружены актуальные настройки.');watchPublication();}
  catch(error){status(error.message,'error');if(error.status===401)showLogin();}
@@ -102,7 +113,7 @@ $('refresh').addEventListener('click',async()=>{
 });
 $('logout').addEventListener('click',()=>{
  if(dirty&&!confirm('Выйти без сохранения изменений?'))return;
- showLogin();status('Вы вышли. Ключ удалён из памяти админки.');
+ showLogin();status('Вы вышли из админки.');
 });
 window.addEventListener('beforeunload',event=>{if(dirty){event.preventDefault();event.returnValue='';}});
 showLogin();status();

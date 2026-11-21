@@ -2,20 +2,14 @@
 
 Готовый многостраничный сайт: 13 страниц, мобильная навигация, запись через WhatsApp и выбор маршрута в Яндекс Картах или 2ГИС. Работает на GitHub Pages, отдельный сервер и база данных не нужны.
 
-## Админка GitHub Pages
+## Password admin
 
-- Сайт: https://swvalera.github.io/massazhny-salon/
-- Админка: https://swvalera.github.io/massazhny-salon/admin/
+- Site: https://swvalera.github.io/massazhny-salon/
+- Admin: https://swvalera.github.io/massazhny-salon/admin/
 
-Админка меняет независимые цены восьми услуг, телефон, адрес и точку маршрута. Настройки сохраняются в `data/defaults.json` ветки `codex/laveliya-site`. GitHub Actions собирает все страницы из этих данных и публикует их на Pages. Цена меняется одновременно в карточках, прайс-листе, на странице услуги и в её SEO-разметке. Обычно публикация занимает несколько минут. Админка отдельно показывает факт сохранения и подтверждение публикации по `deployment.json`.
+The customer signs in with a normal password, which their browser can remember. A GitHub account and manual API-key entry are not needed. Changes update all pages through the existing GitHub Pages publishing workflow. Cloudflare is not used.
 
-Для входа создайте [fine-grained personal access token](https://github.com/settings/personal-access-tokens/new) в аккаунте владельца сайта. Укажите понятное имя и срок действия, Repository access → Only select repositories → `massazhny-salon`, Permissions → Contents → Read and write. Скопируйте ключ в менеджер паролей и вставьте его в поле входа. Инструкция также доступна на экране входа.
-
-Ключ отправляется только на `api.github.com`, хранится только в памяти текущей вкладки, не записывается в репозиторий, localStorage или cookies. После перезагрузки страницы нужно войти заново. При выходе ключ удаляется из памяти приложения. Ключ нельзя давать посетителям сайта; для другого администратора нужен аккаунт с доступом к репозиторию и свой ключ.
-
-При одновременном редактировании проверяется версия файла: чужое сохранение не перезаписывается автоматически. При сетевом сбое записи админка предлагает перечитать данные. Сохранения запускают GitHub Actions и зависят от доступности GitHub и успешной сборки. Если публикация не подтвердилась, откройте её ход по ссылке в админке.
-
-Собственный домен для работы админки не нужен. При смене домена потребуется обновить базовый путь сборки и настройки публикации. Содержимое `data/defaults.json` публично: там только цены и контакты салона, никаких секретов или данных клиентов.
+Owner setup, access boundaries and rotation: [PASSWORD-ADMIN.md](PASSWORD-ADMIN.md). The password is stored only in the private local owner file; published files contain an encrypted credential, never the password or a plaintext token.
 
 ## Необязательная версия Cloudflare
 

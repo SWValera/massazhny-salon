@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "rounds": 600000,
+  "repository": "SWValera/massazhny-salon",
+  "salt": "dThhwb+m+wX3c06mAq7pjPtPSxrXgyjKs03XvzRbnZ8=",
+  "iv": "6qR9x1uMe/arrYIO",
+  "ciphertext": "GfMY0Mr8oEJe1AFtLyVKxcW2RP427Rs2HUGGMURE/m4La5Eyp0ne+51gQxRuzB+NWpmDXkZ8iRDGjVqI0E5snQexZWTL8nb8nTpBimkk5Gp4gv+gWG+Jff1PrWZx8ImEXfM7WQEF90fWgaEhiQ=="
+}
