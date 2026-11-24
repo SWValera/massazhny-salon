@@ -13,6 +13,8 @@ for f in public.rglob('*.html'):
 for f in public.joinpath('admin').iterdir():
     if f.name not in ['index.html','admin.js','admin.css']:f.unlink()
 for name in ['index.php','.htaccess']:shutil.copyfile(ROOT/'hoster'/name,public/name)
+# Keep ownership verification files through every deployment.
+for f in (ROOT/'verification').glob('*.html'):shutil.copyfile(f,public/f.name)
 shutil.copyfile(ROOT/'hoster/app.php',private/'app.php')
 shutil.copyfile(ROOT/'cloudflare/pages.json',private/'pages.json')
 shutil.copyfile(ROOT/'data/services.json',private/'services.json')

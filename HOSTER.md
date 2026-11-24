@@ -24,3 +24,10 @@ Use the existing Hoster DNS, and a Let's Encrypt certificate for apex and www. H
 `npm test` checks the existing shared render and legacy admin. `tests/hoster-integration.mjs` tests a real local PHP server with login, CSRF, invalid values, conflicting writes, per-service price changes, all 13 pages, JSON-LD, contact links and restoration.
 
 Local test command: `npx --yes @php-wasm/cli -S 127.0.0.1:4175 -t .preview/hoster/httpdocs hoster/local-router.php`. Use a local-only copy of config with origin `http://127.0.0.1:4175`, `secure: false`, `indexable: false`. Never upload local test config. The test reads the ignored owner's password note in memory and restores original settings.
+
+## Search ownership and indexing (24 November 2026)
+
+- Google Search Console: verified URL-prefix property `https://xn--80aejmld5l.kz/`; `sitemap.xml` processed successfully, 13 discovered pages.
+- Yandex Webmaster: verified site `https://лавелия.kz`; ten priority URLs (home, massage index, seven massage pages, sugaring) submitted for recrawl and queued. The service currently disables Sitemap submissions (read-only mode). Sitemap is declared in robots.txt for discovery; prices/about/contact are also linked internally. Queued does not mean indexed.
+- `verification/` contains the public ownership files approved by the site owner. Production builds preserve them. Do not remove them during an update.
+- Live audit: 13 sitemap URLs return 200, each has one H1, a unique title and description, self-canonical HTTPS URL and valid JSON-LD, with no noindex response. Admin and API are excluded from crawling.
