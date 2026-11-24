@@ -17,6 +17,7 @@ function updateRoutes(){
 function populate(){
  const {data}=state;
  for(const key of ['phone','city','street','latitude','longitude','twoGisId'])$(key).value=data[key];
+ for(const key of ['googleAnalyticsId','yandexMetrikaId'])$(key).value=data.analytics?.[key]||'';
  $('prices').replaceChildren();
  for(const service of state.services){
   const wrap=document.createElement('div'),label=document.createElement('label'),row=document.createElement('div'),input=document.createElement('input'),unit=document.createElement('span');
@@ -50,11 +51,11 @@ $('settings-form').addEventListener('submit',async event=>{
  busy=true;$('save').disabled=true;$('save').textContent='Сохраняем…';
  // Lock the form while saving so a response cannot overwrite newer local edits.
  const inputs=[...$('settings-form').querySelectorAll('input')];inputs.forEach(input=>input.disabled=true);
- const data={phone:$('phone').value,city:$('city').value,street:$('street').value,latitude:Number($('latitude').value),longitude:Number($('longitude').value),twoGisId:$('twoGisId').value,prices:{}};
+ const data={phone:$('phone').value,city:$('city').value,street:$('street').value,latitude:Number($('latitude').value),longitude:Number($('longitude').value),twoGisId:$('twoGisId').value,analytics:{googleAnalyticsId:$('googleAnalyticsId').value.trim().toUpperCase(),yandexMetrikaId:$('yandexMetrikaId').value.trim()},prices:{}};
  for(const service of state.services)data.prices[service.id]=Number($('price-'+service.id).value);
  try{
   const result=await request('settings',{method:'PUT',body:JSON.stringify({version:state.version,data})});
-  state={...state,...result};populate();status('Сохранено. Цены и контакты обновлены на всех страницах сайта.','success');
+  state={...state,...result};populate();status('Сохранено. Настройки применены на всех страницах сайта.','success');
  }catch(error){status(error.message,'error');if(error.status===401)showLogin();}
  finally{busy=false;inputs.forEach(input=>input.disabled=false);$('save').disabled=!dirty;$('save').textContent='Сохранить изменения';}
 });

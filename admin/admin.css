@@ -5,3 +5,4 @@
 
 /* Keep price figures, units and field outlines readable on small screens. */
 .price-input span{font-size:18px;font-weight:600;color:#44354f}.section-title span,.eyebrow{font-weight:600}input::placeholder{color:#6a6074;opacity:1}input:disabled{opacity:1;-webkit-text-fill-color:#51465c}.publication strong{font-weight:700}
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.analytics-card{min-width:0;padding:20px;border:1px solid #9b87ac;border-radius:14px;background:linear-gradient(145deg,#fdf7fa,#f4eff8)}.analytics-card h3{font-size:20px;margin:0 0 16px}.analytics-card label{font-size:15px}.analytics-card ol{padding-left:22px;font-size:14px;line-height:1.7}.analytics-card li{margin-bottom:12px}.analytics-card details{margin-top:16px;padding-top:16px}.analytics-card .hint:last-child{margin-bottom:0}.analytics-note{margin-bottom:0}@media(max-width:700px){.analytics-grid{grid-template-columns:1fr}.analytics-card{padding:18px 14px}}

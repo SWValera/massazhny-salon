@@ -31,6 +31,17 @@ function validate(array $d): array {
     if(!isset($d['twoGisId'])||!is_string($d['twoGisId'])||!preg_match('/^\d{0,25}$/D',$d['twoGisId']))fail('Проверьте номер здания 2ГИС.',400);
     $out['twoGisId']=$d['twoGisId'];$out['prices']=[];
     foreach(services() as $s){$p=$d['prices'][$s['id']]??null;if(!is_int($p)||$p<1||$p>10000000)fail('Цена «'.$s['name'].'» должна быть целым числом от 1 до 10 000 000 ₸.',400);$out['prices'][$s['id']]=$p;}
+    if(array_key_exists('analytics',$d)){
+        if(!is_array($d['analytics']))fail('Проверьте настройки аналитики.',400);
+        $out['analytics']=[];
+        foreach(['googleAnalyticsId'=>'/^G-[A-Z0-9]{4,20}$/D','yandexMetrikaId'=>'/^[1-9][0-9]{0,11}$/D'] as $key=>$pattern){
+            $id=$d['analytics'][$key]??'';
+            if(!is_string($id))fail('Вставьте только идентификатор счётчика, без HTML-кода.',400);
+            $id=trim($id);if($key==='googleAnalyticsId')$id=strtoupper($id);
+            if($id!==''&&!preg_match($pattern,$id))fail($key==='googleAnalyticsId'?'Проверьте Google Analytics: нужен идентификатор вида G-XXXXXXXXXX.':'Проверьте Метрику: номер счётчика должен содержать только цифры.',400);
+            $out['analytics'][$key]=$id;
+        }
+    }
     return $out;
 }
 function render_page(array $t,string $path,array $d): string {
@@ -52,6 +63,11 @@ function render_page(array $t,string $path,array $d): string {
     $seo='<meta name="robots" content="'.($c['indexable']&&$path!='/404/'?'index, follow':'noindex, nofollow').'">';
     if($path!='/404/')$seo.='<link rel="canonical" href="'.enc($site.$path).'"><meta property="og:url" content="'.enc($site.$path).'">';
     $html=preg_replace_callback('/@@([A-Z_]+[a-z0-9_-]*)@@/',function($m)use($v,$schemas,$seo){$k=$m[1];if($k==='SEO')return $seo;if(str_starts_with($k,'SCHEMA_'))return $schemas[(int)substr($k,7)-1];if(!array_key_exists($k,$v))throw new RuntimeException('template');return enc($v[$k]);},$t['html']);
+    $ga=$d['analytics']['googleAnalyticsId']??'';$ym=$d['analytics']['yandexMetrikaId']??'';
+    // Only validated identifiers become attributes; never accept executable snippets.
+    if(!preg_match('/^G-[A-Z0-9]{4,20}$/D',$ga))$ga='';
+    if(!preg_match('/^[1-9][0-9]{0,11}$/D',$ym))$ym='';
+    if($ga!==''||$ym!=='')$html=str_replace('</head>','<script src="/assets/analytics.js" data-google="'.enc($ga).'" data-yandex="'.enc($ym).'" defer></script></head>',$html);
     return str_replace('<meta property="og:image" content="/','<meta property="og:image" content="'.enc($site).'/',$html);
 }
 function session_open(): void {
@@ -96,6 +112,7 @@ function api(string $action): never {
     $data=validate($body['data']);$lock=fopen(__DIR__.'/settings.lock','c+');flock($lock,LOCK_EX);
     try{
         $old=settings();if(($body['version']??null)!==$old['version'])fail('Настройки уже изменились. Обновите страницу, чтобы загрузить актуальные данные.',409);
+        if(!array_key_exists('analytics',$data)&&isset($old['data']['analytics']))$data['analytics']=$old['data']['analytics'];
         $new=['data'=>$data,'version'=>$old['version']+1,'updatedAt'=>time()];
         atomic_json(__DIR__.'/settings.previous.json',$old);atomic_json(__DIR__.'/settings.json',$new);
     }finally{flock($lock,LOCK_UN);fclose($lock);}

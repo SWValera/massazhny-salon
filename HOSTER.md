@@ -31,3 +31,13 @@ Local test command: `npx --yes @php-wasm/cli -S 127.0.0.1:4175 -t .preview/hoste
 - Yandex Webmaster: verified site `https://лавелия.kz`; ten priority URLs (home, massage index, seven massage pages, sugaring) submitted for recrawl and queued. The service currently disables Sitemap submissions (read-only mode). Sitemap is declared in robots.txt for discovery; prices/about/contact are also linked internally. Queued does not mean indexed.
 - `verification/` contains the public ownership files approved by the site owner. Production builds preserve them. Do not remove them during an update.
 - Live audit: 13 sitemap URLs return 200, each has one H1, a unique title and description, self-canonical HTTPS URL and valid JSON-LD, with no noindex response. Admin and API are excluded from crawling.
+
+## Optional analytics (24 November 2026)
+
+The password admin has an Analytics section with independent Google Analytics 4 (`G-…`) and Yandex Metrica (numeric counter ID) inputs and service-specific instructions. Save applies the IDs to every public PHP-rendered page; clearing an input disables that service. Both are initially empty in production. Actual report delivery must be checked in the owner's analytics accounts after real IDs are supplied.
+
+`settings.data.analytics` stores `googleAnalyticsId` and `yandexMetrikaId`. Older settings without this object still work; saves from older clients preserve an existing analytics object. Server validation only accepts IDs, never arbitrary HTML. `assets/analytics.js` asynchronously loads the official libraries, configures page views once and excludes admin/API paths. No third-party analytics request is made when IDs are empty. Metrica Webvisor is disabled. Google Ads linking/conversions and Metrica goals are configured separately in those services.
+
+Implementation references: [Google's supported gtag.js snippet](https://support.google.com/analytics/answer/17231523?hl=en) and [Metrica initialization](https://yandex.ru/support/metrica/ru/code/counter-initialize.html).
+
+Validation: 15 Node tests passed. Local PHP integration verifies both counters on all 13 pages, independent activation/removal, identifier normalization, rejection of HTML, preservation when older clients save, and unchanged price/contact behavior. Production save/reload with empty IDs preserved every business field and left public homepage HTML unchanged. Mobile layout checked at 390×844; proof: `.preview/admin-analytics-live.jpg` (ignored).
