@@ -5,7 +5,7 @@ import defaults from '../data/defaults.json' with {type:'json'};
 import {validateSettings,renderPage,routes} from '../cloudflare/render.js';
 test('reject invalid prices, phone and route destinations',()=>{
  for(const data of [{...defaults,phone:'javascript:alert(1)'},{...defaults,latitude:NaN},{...defaults,twoGisId:'x'},{...defaults,prices:{...defaults.prices,klassicheskiy:-1}},{...defaults,prices:{...defaults.prices,klassicheskiy:1.5}}])assert.throws(()=>validateSettings(data));
- assert.equal(validateSettings({...defaults,phone:'+7 (705) 131-03-39'}).phone,defaults.phone);
+ assert.equal(validateSettings({...defaults,phone:'+7 (705) 131-03-39'}).phone,'+77051310339');
 });
 test('render every page with independent prices and current contacts, including SEO and links',()=>{
  const data={...defaults,phone:'+77001234567',city:'Тестовый город',street:'Тестовая, 99',latitude:43.25,longitude:76.95,twoGisId:'',prices:Object.fromEntries(Object.keys(defaults.prices).map((key,index)=>[key,6100+index*100]))};

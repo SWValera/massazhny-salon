@@ -15,6 +15,23 @@ out=ROOT/a.output
 subprocess.run(['python3',str(ROOT/'scripts/build.py'),'--output',str(out)],check=True,cwd=ROOT)
 subprocess.run(['node',str(ROOT/'scripts/render_pages.mjs'),str(out)],check=True,cwd=ROOT)
 subprocess.run(['python3',str(ROOT/'scripts/check.py'),str(out)],check=True,cwd=ROOT)
+# After migration, old shared links must reach the one current production site.
+production_file=ROOT/'data/production.json'
+if production_file.exists():
+    from html import escape
+    origin=json.loads(production_file.read_text())['origin'].rstrip('/')
+    assert origin=='https://xn--80aejmld5l.kz', 'Unexpected production origin'
+    paths=list(json.loads((ROOT/'cloudflare/pages.json').read_text()))+['/admin/']
+    shutil.rmtree(out/'admin')
+    for route in paths:
+        target=origin+route
+        doc='<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><meta http-equiv="refresh" content="0;url='+escape(target,quote=True)+'"><link rel="canonical" href="'+escape(target,quote=True)+'"><title>Лавелия — новый адрес сайта</title><p>Сайт переехал: <a href="'+escape(target,quote=True)+'">открыть Лавелию</a>.</p></html>'
+        dest=out/route.strip('/')/'index.html';dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(doc)
+        if route=='/404/':(out/'404.html').write_text(doc)
+    (out/'.nojekyll').touch()
+    print('PASS: old Pages URLs, including admin, redirect to Hoster production; no access vault published')
+    raise SystemExit(0)
+
 # Publish the GitHub API admin; retain the Worker version separately in source.
 shutil.copyfile(ROOT/'admin/pages-admin.js',out/'admin/admin.js')
 shutil.copyfile(ROOT/'admin/pages-index.html',out/'admin/index.html')

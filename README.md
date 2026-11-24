@@ -1,3 +1,5 @@
+Production deployment: see [HOSTER.md](HOSTER.md). The Hoster version stores current settings on the hosting server.
+
 # Массажный салон «Лавелия» — Алматы
 
 Готовый многостраничный сайт: 13 страниц, мобильная навигация, запись через WhatsApp и выбор маршрута в Яндекс Картах или 2ГИС. Работает на GitHub Pages, отдельный сервер и база данных не нужны.

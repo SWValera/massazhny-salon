@@ -8,7 +8,7 @@ async function request(path,options={}){
   return result;
 }
 function markDirty(){dirty=true;$('save').disabled=busy;$('save-state').textContent='Есть несохранённые изменения';status();}
-function showLogin(){$('login').hidden=false;$('editor').hidden=true;}
+function showLogin(){state=null;dirty=false;$('password').value='';$('login').hidden=false;$('editor').hidden=true;}
 function updateRoutes(){
  const lat=Number($('latitude').value),lon=Number($('longitude').value),id=$('twoGisId').value;
  $('yandex-check').href=`https://yandex.kz/maps/?mode=routes&rtext=~${lat}%2C${lon}&rtt=auto`;
@@ -36,7 +36,7 @@ async function load(){
 $('retry').addEventListener('click',load);
 $('login-form').addEventListener('submit',async event=>{
  event.preventDefault();const button=event.submitter;button.disabled=true;status('Проверяем пароль…');
- try{await request('login',{method:'POST',body:JSON.stringify({password:$('password').value})});$('password').value='';await load();}
+ try{const password=$('password').value;await request('login',{method:'POST',body:JSON.stringify({password})});if(window.PasswordCredential&&navigator.credentials?.store){navigator.credentials.store(new PasswordCredential({id:'laveliya-admin',name:'Лавелия — администратор',password})).catch(()=>{});}$('password').value='';await load();}
  catch(error){status(error.message,'error');}finally{button.disabled=false;}
 });
 $('settings-form').addEventListener('input',event=>{
