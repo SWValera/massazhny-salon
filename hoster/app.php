@@ -108,7 +108,8 @@ function run_site(): void {
         if(str_starts_with($path,'/api/admin/'))api(substr($path,11));
         $pages=json_read(__DIR__.'/pages.json');
         if($path!=='/'&&!str_ends_with($path,'/')&&isset($pages[$path.'/'])){header('Location: '.$path.'/',true,301);exit;}
-        if(!isset($pages[$path])){$path='/404/';http_response_code(404);}
+        if(!isset($pages[$path]))$path='/404/';
+        if($path==='/404/')http_response_code(404);
         header('Cache-Control: no-store');header('Content-Type: text/html; charset=utf-8');echo render_page($pages[$path],$path,settings()['data']);
     }catch(Throwable $e){error_log('Laveliya runtime error: '.$e->getMessage());http_response_code(503);header('Cache-Control: no-store');if(str_starts_with($_SERVER['REQUEST_URI']??'','/api/'))respond(['error'=>'Не удалось сохранить или загрузить данные. Повторите попытку позже.'],503);echo 'Сайт временно недоступен. Пожалуйста, попробуйте позже.';}
 }
